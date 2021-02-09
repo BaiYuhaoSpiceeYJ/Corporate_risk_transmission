@@ -1,13 +1,6 @@
 from scipy.sparse import coo_matrix
 import numpy as np
-import read
 
-# 将图转为矩阵，输出稀疏矩阵M
-# coo_matrix数据结构：
-# row = [0,1,3]
-# col = [2,2,1]
-# data = [5,1,7]
-# 即mat[0,2] = 5,mat[1,2] = 1,mat[3,1] = 7，其余均为0
 
 def graph_to_m(graph, graph_count):
     vertex = list(graph.keys())
@@ -23,7 +16,11 @@ def graph_to_m(graph, graph_count):
         # weight = 1/len(graph[element_i]) # 矩阵的数值是顶点i出度的倒数
         row_index = address_dict[element_i]  # i的行索引
         for element_j in graph[element_i]:  # i的列索引
-            weight = graph[element_i][element_j] / graph_count[element_i]
+            if graph[element_i][element_j] != 0:
+                weight = graph[element_i][element_j] / (graph_count[element_i])# + graph_count[element_j])
+
+            # print(element_i, element_j)
+            # print(weight)
             col_index = address_dict[element_j]
             row.append(row_index)
             col.append(col_index)

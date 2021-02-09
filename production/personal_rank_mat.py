@@ -6,7 +6,7 @@ import numpy as np
 
 # 二分图，固定定点，alpha概率，给固定定点推荐的数目
 # 输出词典，key为item，value是pr值，长度是推荐数目
-def personal_rank_mat(graph, graph_count, root, alpha, recom_num=10):
+def personal_rank_mat(graph, graph_count, root, alpha):
     """
     Args:
         graph:user item graph
@@ -19,7 +19,7 @@ def personal_rank_mat(graph, graph_count, root, alpha, recom_num=10):
     """
     m, vertex, address_dict = mat_util.graph_to_m(graph, graph_count)
     if root not in address_dict:
-        return {}
+       return {}
     score_dict = {}
     recom_dict = {}
     mat_all = mat_util.mat_all_point(m, vertex, alpha)  # A矩阵
@@ -34,20 +34,19 @@ def personal_rank_mat(graph, graph_count, root, alpha, recom_num=10):
         # if point in graph[root]:  # 过滤掉根结点user行为过的item
         #    continue
         score_dict[point] = res[index]
-    for zuhe in sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)[:recom_num]:
-        point, score = zuhe[0], zuhe[1]
+    for compo in sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True):
+        point, score = compo[0], compo[1]
         recom_dict[point] = score
 
     return recom_dict
 
 
 def get_one_user_by_mat(user):
-    alpha = 0.8
+    alpha = 0.6
     graph, graph_count = read.get_graph_from_data(r"..\data\企业交易数据all.txt")
-    recom_result = personal_rank_mat(graph, graph_count, user, alpha, 10000)
+    recom_result = personal_rank_mat(graph, graph_count, user, alpha)
     # print(recom_result)
     # print(len(list(recom_result)))
-    # print(recom_result)
     return recom_result
 
 
@@ -60,12 +59,13 @@ def get_all_user_by_mat():
         i += 1
 
         result = get_one_user_by_mat(data)
+
         for element in result:
             if element not in all_black_data:
                 if element not in all_result:
                     all_result[element] = 0
                 all_result[element] += result[element]
-    # print(len(list(all_result)))
+        # print(len(list(all_result)))
     all_result = sorted(all_result.items(), key=operator.itemgetter(1), reverse=True)
     # print(len(list(all_result)))
     for i in range(len(list(all_result))):
