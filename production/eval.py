@@ -96,14 +96,13 @@ graph, graph_count = get_all_trade_data(r'C:\Users\SpiceeYJ\Desktop\Corporate ri
 
 total_black_trade = 0
 total_trade = 0
-i = 0
 
 for etr in graph:
     total_black_trade += int(graph[etr])
     total_trade += int(graph_count[etr])
 
 for item in non_black_list:
-    if item in graph and i < 10000:
+    if item in graph:
         print('{} {}/{}'.format(item, graph[item], graph_count[item]), file=open(r'..\data\result_explication.txt', 'a'))
-        i += 1
+
 print(total_black_trade, total_trade)

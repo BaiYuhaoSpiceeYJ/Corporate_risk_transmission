@@ -6,6 +6,8 @@ import numpy as np
 
 # 二分图，固定定点，alpha概率，给固定定点推荐的数目
 # 输出词典，key为item，value是pr值，长度是推荐数目
+# def get_res()
+
 def personal_rank_mat(graph, graph_count, root, alpha):
     """
     Args:
@@ -45,8 +47,6 @@ def get_one_user_by_mat(user):
     alpha = 0.6
     graph, graph_count = read.get_graph_from_data(r"..\data\企业交易数据all.txt")
     recom_result = personal_rank_mat(graph, graph_count, user, alpha)
-    # print(recom_result)
-    # print(len(list(recom_result)))
     return recom_result
 
 
